@@ -57,7 +57,7 @@ scripts/              # hunt_plan, sense_gate, helpers, tests
 
 ## License
 
-No license file was present in the source tree (`sinwei802/kali_cc_skills`). License is currently unspecified.
+[MIT](LICENSE) — Copyright (c) 2026 sinwei802.
 
 ## Related
 
