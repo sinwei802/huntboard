@@ -1,5 +1,8 @@
 # session-break-rebuild
 
+> **繁中**：Session 斷裂重建：remount／清 cookie 後不得假設舊態仍有效。
+
+
 ## 何時用
 
 - lab／容器／box remount、path-wipe、服務重起、明確「舊 cookie／JWT／籃子不可假設有效」。

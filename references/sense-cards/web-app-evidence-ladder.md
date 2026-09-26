@@ -1,5 +1,8 @@
 # web-app-evidence-ladder
 
+> **繁中**：Web 證據階梯：公開 observe 後下一階要交什麼（方法；無解法）。
+
+
 ## 何時用
 
 - Web／應用類 lab（含 scoreboard／challenge 盤）已做完公開 observe，要提案「下一階」時。

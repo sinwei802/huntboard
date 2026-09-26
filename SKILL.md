@@ -9,6 +9,18 @@ description: >
   除必要技術內容外使用繁體中文。
 ---
 
+<!-- 人讀摘要：agents 仍以下方 skill 正文為準；勿把本摘要當戰鬥閘。 -->
+## 人讀摘要（繁中）
+
+**HuntSpear**（倉庫 [sinwei802/huntspear](https://github.com/sinwei802/huntspear)）是授權狩獵用的搜尋驅動副駕駛 skill：先觀察 → 搜尋展開戰術 → 依計畫執行 → 依回饋改計畫。
+
+- **用途**：在明確 scope／授權下，以本地 sense、薄方法卡與 `sense_gate` 約束下一刀提案。
+- **內部名**：`warboard`（作戰台／共用狀態）維持英文技術名。
+- **紅線**：禁止 PoC、payload、exploit cookbook、逐步攻擊食譜寫進本 skill／本樹；方法卡只寫門檻、證據形、死路與查法。
+- **人讀入口**：[`README.md`](README.md)、[`USER.md`](USER.md)。Agent 載入請繼續用下方正文與 `references/`。
+
+---
+
 # huntspear — Search-Driven Hunting Copilot
 
 思考方式：「先觀察獵物 → 搜尋展開戰術 → 依計畫打一刀 → 回饋改計畫」，直到狩獵成功。

@@ -1,22 +1,35 @@
-# Operator notes (preferences, not combat gates)
+# 操作者說明（偏好，不是戰鬥閘）
 
-## How to load
+本檔給人讀；agent 以 [`SKILL.md`](SKILL.md) 為準。產品名 **HuntSpear**；倉庫 https://github.com/sinwei802/huntspear。內部物件 `warboard`（作戰台）維持英文技術名。
 
-- Treat this directory as `$SKILL_ROOT` (must contain `SKILL.md`, `references/`, `scripts/`).
-- Symlink the same tree into your agent harness; do not fork copies.
-- Opening hot path:
+## 如何載入
+
+- 把本目錄當成 `$SKILL_ROOT`（必須含 `SKILL.md`、`references/`、`scripts/`）。
+- 用 symlink 把同一棵樹掛進 agent harness；不要 fork 複製。
+- 開局熱路徑：
   1. `python3 "$SKILL_ROOT/scripts/hunt_plan.py" opening "…"`
   2. `python3 "$SKILL_ROOT/scripts/load_state_bundle.py"`
-  3. Then touch the target
-- Before proposing the next action: read `references/local-sense.md` if not already loaded this session; if fields are missing run `python3 "$SKILL_ROOT/scripts/sense_gate.py" --check <proposal.json>` (fail = do not emit exploit-class options).
+  3. 再碰目標
+- 提案下一動作前：若本 session 尚未載過，先讀 `references/local-sense.md`；欄位缺漏時跑 `python3 "$SKILL_ROOT/scripts/sense_gate.py" --check <proposal.json>`（fail＝不得輸出利用級選項）。
 
-## Warboard console (optional)
+## warboard console（可選）
 
-- If you run a local warboard console, point it at your engagement SQLite (`./pentest-state/warboard.sqlite` or your harness path).
-- Schema / interaction contract: `references/warboard-schema.md`, `references/interaction-truth-contract.md` (not required every turn).
+- 若你有本地 warboard（作戰台）console，指向你的 engagement SQLite（`./pentest-state/warboard.sqlite` 或 harness 路徑）。
+- Schema／互動契約：`references/warboard-schema.md`、`references/interaction-truth-contract.md`（不必每回合讀）。
 
-## Offline cracking preference (optional)
+## 離線破解偏好（可選）
 
-- If the attack host has no GPU, do not run hashcat/john there.
-- Copy offline hashes to your GPU box share using your own path convention; keep a copy under `./pentest-state/loot/` as well.
-- Give the human only filenames and relative hints—never assume another machine’s absolute mount path.
+- 攻擊主機若無 GPU，不要在那台上跑 hashcat／john。
+- 把離線 hash 依你自己的路徑慣例拷到 GPU 機；同時在 `./pentest-state/loot/` 留一份。
+- 只把檔名與相對提示交給人——**不要**假設另一台機器的絕對掛載路徑。
+- 本節只談偏好與搬運，**不**含破解步驟或字典／規則 cookbook。
+
+## 紅線
+
+- 本樹無 PoC、payload、逐步利用食譜；操作者也不應要求 agent 把這類內容寫進 skill。
+
+---
+
+## English (short)
+
+Operator preferences (not combat gates). Load via `$SKILL_ROOT` + symlink; opening path uses `hunt_plan.py` → `load_state_bundle.py`. Optional local **warboard** console against engagement SQLite. Prefer offline cracking on a GPU box (paths/hints only — no crack recipes here). Red line: no PoC / payload / exploit cookbook in this tree.

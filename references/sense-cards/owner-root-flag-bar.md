@@ -1,5 +1,8 @@
 # owner-root-flag-bar
 
+> **繁中**：主人尺：場次只認 Linux root flag 時的達標／卡死界線。
+
+
 ## 何時用
 
 - 主人已鎖「只認 Linux root flag」的場次。

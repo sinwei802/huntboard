@@ -1,5 +1,8 @@
 # post-foothold-map
 
+> **繁中**：立足後地圖：foothold 後要先釐清的面與證據（方法；無 PoC）。
+
+
 
 ## 何時用
 
