@@ -31,12 +31,12 @@
 - 觸發：Web 訓練場觀察收場未達最低達標；Linux misconfig 路徑已驗證 sense→授權升級
 - `tradecraft-index.md` 已掛症狀列
 
-# huntboard CHANGELOG
+# huntspear CHANGELOG
 
 ## 2026-09-26 — staged Hard×4 sense cards (post-foothold / priv-esc gate)
 
 - Add thin method cards `post-foothold-map` / `priv-esc-evidence-gate` (Chinese; 何時用／要驗證什麼／證據長什麼樣／死路／去哪查). **No** payload／PoC／exploit steps.
-- Wire into `sense_gate.py` `KNOWN_CARDS`, `local-sense.md`, `sense-vault-map.md`, `test_sense_gate.py`, vault `資安/Huntboard 薄 playbook/`.
+- Wire into `sense_gate.py` `KNOWN_CARDS`, `local-sense.md`, `sense-vault-map.md`, `test_sense_gate.py`, vault `資安/HuntSpear 薄 playbook/`.
 - Acceptance bar moves to staged `00→05` root/DA rehearsal (methodology); prior orient/map-only PASS void.
 
 
@@ -49,7 +49,7 @@
 ### 新增／交付
 - `USER.md`：載入說明、warboard console／sqlite 註記、events-fold 凍結債
 - 分階 root／DA 驗收指標（方法論；**無**解法／writeup／exploit 步驟；題面產物不進本 repo）
-- 安裝：以本 `huntboard/` 目錄為 `$SKILL_ROOT`（各 harness symlink 同一樹）
+- 安裝：以本 `huntspear/` 目錄為 `$SKILL_ROOT`（各 harness symlink 同一樹）
 
 ### 未動
 - 不改 events-fold UI；不改 huntseeker／不併攻擊 cookbook
@@ -69,7 +69,7 @@
 ### 修改
 - `references/interaction-truth-contract.md`：`phase=idle` 允許 0 個 options（不發明假選項）
 - `references/tradecraft-index.md`：症狀表加 local-sense／cloud-sources
-- vault `Huntboard 薄 playbook.md`：標 runtime 真源對齊（非第二份手法庫）
+- vault `HuntSpear 薄 playbook.md`：標 runtime 真源對齊（非第二份手法庫）
 - `SKILL.md` §0：提案前載 `local-sense`／必要時 sense-card；DESIGN 載 `cloud-sources`；可跑 sense_gate
 - `SKILL.md` §2：本地 sense 先於下一刀
 - `SKILL.md` §4：手法 playbook 禁令保留；方法薄層允許並強制對卡
@@ -186,7 +186,7 @@
 - `SKILL.md` §3：從「開局查證據資料庫」改成「本場第一次見到可索引 IOC 才跑 `ioc_lookup.py`」。無 IOC 或 CTF／HTB／THM／flag → 0 次讀 vault。
 - 戰鬥中禁止 `read_file` vault 與 `evidence-db` SKILL.md。腳本搜索引，最多帶 1 個實體摘要（不含備註／案件筆記）。
 - §0 開局三步明示不含查庫。§8 CTF 禁止跑 lookup。§10 收尾才載 `evidence-db` 寫庫。
-- `scripts/ioc_lookup.py`：fixed-string 查總索引；路徑從 `evidence-db` 表／`OBSIDIAN_VAULT` 解析，huntboard 不硬寫 vault 路徑。
+- `scripts/ioc_lookup.py`：fixed-string 查總索引；路徑從 `evidence-db` 表／`OBSIDIAN_VAULT` 解析，huntspear 不硬寫 vault 路徑。
 
 ### 刪／降
 - 開局必查 evidence-db 的儀式。
@@ -519,7 +519,7 @@
 - **R8** 通用能力先搜現成工具。
 - **T1–T3** 作戰思維卡（ACT 前四欄、搜尋 SKIP 具名、新 principal = 新資產面）。
 - `references/thinking-loop.md`（原 §5.0–5.2 長循環搬出 main）。
-- 選配 Hermes runtime plugin（套件 id `huntboard-runtime`，本 skill 的選配 runtime plugin id）：P0-RT-1、system pin、P0-RT-5a 寫入閘（不是 huntboard skill 套件的一部分）。
+- 選配 Hermes runtime plugin（套件 id `huntspear-runtime`，本 skill 的選配 runtime plugin id）：P0-RT-1、system pin、P0-RT-5a 寫入閘（不是 huntspear skill 套件的一部分）。
 
 ### 修改
 - `SKILL.md` 減法：R1／R5 長補充併回紅線一句；§5 改摘要；R3 收斂短詞語義。
@@ -539,8 +539,8 @@
 
 ## 2026-08-11 — Respawn：加入紅線／學習回路／P0-RT-5
 
-把 huntboard 從「搜尋驅動狩獵副駕駛」升級為 respawn 後的單一真源戰鬥主檔。
-frontmatter `name: huntboard`；`description` 改寫反映 respawn 設計。
+把 huntspear 從「搜尋驅動狩獵副駕駛」升級為 respawn 後的單一真源戰鬥主檔。
+frontmatter `name: huntspear`；`description` 改寫反映 respawn 設計。
 設計：搜尋驅動精簡脊椎 + redthread 8/11 硬化過的可機械判定閘門 + 一條全新學習回路。
 共識來源：2026-08-11 Hunter × Claude。
 

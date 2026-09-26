@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Hunt plan schema, phase machine, and stance-line codec.
 
-Canonical field names and transition rules for huntboard. Semantics live in
+Canonical field names and transition rules for huntspear. Semantics live in
 ``references/hunt-loop.md``. This module is the mechanical source of truth:
 validate, adjust, and decide whether a deep act is allowed.
 """
@@ -564,6 +564,8 @@ def _cmd_adjust(path: Path, outcome: str, observed: str, write: bool) -> int:
 _SESSION_ID_RE = re.compile(r"^[A-Za-z0-9._-]{1,128}$")
 _REF_NAME_RE = re.compile(r"^[a-z0-9-]+(?:/[a-z0-9-]+)?$")
 _SESSION_ID_ENV = (
+    "HUNTSPEAR_SESSION_ID",
+    # Keep reading the pre-rename variable so existing sessions continue to load.
     "HUNTBOARD_SESSION_ID",
     "GROK_SESSION_ID",
     "CLAUDE_SESSION_ID",
@@ -584,10 +586,15 @@ def session_id() -> str | None:
 
 
 def session_load_dir() -> Path:
-    override = os.environ.get("HUNTBOARD_SESSION_LOAD_DIR", "").strip()
-    if override:
-        return Path(override)
-    return Path.home() / ".cache" / "huntboard" / "session-load"
+    for key in ("HUNTSPEAR_SESSION_LOAD_DIR", "HUNTBOARD_SESSION_LOAD_DIR"):
+        override = os.environ.get(key, "").strip()
+        if override:
+            return Path(override)
+    current = Path.home() / ".cache" / "huntspear" / "session-load"
+    legacy = Path.home() / ".cache" / "huntboard" / "session-load"
+    if legacy.exists() and not current.exists():
+        return legacy
+    return current
 
 
 def _reference_path(name: str) -> Path:

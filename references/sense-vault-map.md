@@ -17,7 +17,7 @@
 | `owner-root-flag-bar.md` | `PB-主人尺 root flag.md` | 只認 root flag |
 | `doctrine-compatible-privesc.md` | `PB-提權與禁 PoC 相容.md` | misconfig vs 需 PoC 分流 |
 | `post-engagement-retro.md` | `PB-結案复盤.md` | 成敗都迭代 |
-| （總則）`local-sense.md` | `Huntboard 薄 playbook.md` | 強制程序／與手法 playbook 切開 |
+| （總則）`local-sense.md` | `HuntSpear 薄 playbook.md` | 強制程序／與手法 playbook 切開 |
 | （總則）`cloud-sources.md` | `雲端資料來源登錄.md` | 多源登錄與增刪 |
 
 ## 回寫規則

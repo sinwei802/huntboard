@@ -281,11 +281,11 @@ class HuntPlanCliTest(unittest.TestCase):
 class SessionLoadTest(unittest.TestCase):
     def _env(self, tmp: str, session: str | None) -> dict[str, str]:
         env = {
-            "HUNTBOARD_SESSION_LOAD_DIR": tmp,
+            "HUNTSPEAR_SESSION_LOAD_DIR": tmp,
             "PATH": os.environ.get("PATH", ""),
         }
         if session is not None:
-            env["HUNTBOARD_SESSION_ID"] = session
+            env["HUNTSPEAR_SESSION_ID"] = session
         return env
 
     def test_mark_show_stale_reset(self) -> None:
@@ -384,7 +384,7 @@ class SkillContractTest(unittest.TestCase):
         skill = self._read("SKILL.md")
         for banned in (
             "Hermes",
-            "huntboard-runtime",
+            "huntspear-runtime",
             "7–8/10",
             "6–7/10",
             "p0-runtime-brief",

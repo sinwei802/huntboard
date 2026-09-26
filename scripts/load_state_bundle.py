@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Load and validate a pentest state bundle without reading evidence bodies.
 
-Used by huntboard (and compatible with the shared ./pentest-state/ schema).
+Used by huntspear (and compatible with the shared ./pentest-state/ schema).
 """
 
 from __future__ import annotations
@@ -38,8 +38,18 @@ ACTIVE_HYPOTHESIS_ID_RE = re.compile(
 )
 EVIDENCE_ID_RE = re.compile(r"^E-\d+$")
 MARKDOWN_META_RE = re.compile(
+    r"^<!-- huntspear-state: (?P<meta>\{.*\}) -->$"
+)
+# Existing pentest-state bundles may still carry the pre-rename marker.
+LEGACY_MARKDOWN_META_RE = re.compile(
     r"^<!-- huntboard-state: (?P<meta>\{.*\}) -->$"
 )
+
+
+def _markdown_meta_match(line: str) -> re.Match[str] | None:
+    return MARKDOWN_META_RE.fullmatch(line) or LEGACY_MARKDOWN_META_RE.fullmatch(line)
+
+
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 RELATIONS = {"supports", "refutes"}
 CONFIDENCE = {"high", "medium", "low"}
@@ -214,7 +224,7 @@ def _parse_markdown_meta(
     if len(lines) < 2:
         warnings.append(f"{name}: missing v2 metadata comment")
         return None
-    match = MARKDOWN_META_RE.fullmatch(lines[1].strip())
+    match = _markdown_meta_match(lines[1].strip())
     if not match:
         warnings.append(f"{name}: second line is not v2 metadata")
         return None
@@ -607,7 +617,7 @@ def _meta(checkpoint: str) -> dict[str, Any]:
 
 def _metadata_comment(checkpoint: str) -> str:
     payload = json.dumps(_meta(checkpoint), separators=(",", ":"))
-    return f"<!-- huntboard-state: {payload} -->"
+    return f"<!-- huntspear-state: {payload} -->"
 
 
 def _write_complete_fixture(root: Path, checkpoint: str = "cp-1") -> None:
@@ -707,7 +717,7 @@ def _write_complete_fixture(root: Path, checkpoint: str = "cp-1") -> None:
 
 def _run_self_test() -> int:
     failures: list[str] = []
-    with tempfile.TemporaryDirectory(prefix="huntboard-state-test-") as temp:
+    with tempfile.TemporaryDirectory(prefix="huntspear-state-test-") as temp:
         base = Path(temp)
 
         complete_root = base / "complete"
@@ -958,7 +968,7 @@ def _stamp_markdown(path: Path, heading: str, comment: str) -> None:
         return
     if lines[0].strip() != heading:
         lines = [heading, comment, *lines]
-    elif len(lines) > 1 and MARKDOWN_META_RE.fullmatch(lines[1].strip()):
+    elif len(lines) > 1 and _markdown_meta_match(lines[1].strip()):
         lines[1] = comment
     else:
         lines.insert(1, comment)
@@ -1005,7 +1015,7 @@ def stamp_bundle(
         "last_updated": _now_iso(),
     }
     comment = (
-        "<!-- huntboard-state: "
+        "<!-- huntspear-state: "
         + json.dumps(meta, separators=(",", ":"))
         + " -->"
     )

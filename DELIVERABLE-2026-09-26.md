@@ -1,4 +1,4 @@
-# Huntboard skill 交件清單（2026-09-26 夜）
+# HuntSpear skill 交件清單（2026-09-26 夜）
 
 主人起床可驗：本檔 + 下列路徑 + `python3 -m unittest discover -p 'test_*.py'`（`scripts/`）。
 
@@ -16,7 +16,7 @@
 ## 路徑一覽
 
 ```
-huntboard/
+huntspear/
   SKILL.md                          # 熱路徑＋切開條款
   CHANGELOG.md                      # 2026-09-26 條
   DELIVERABLE-2026-09-26.md         # 本清單
@@ -47,7 +47,7 @@ Vault 人讀鏡像：可選；runtime 真源＝本樹。
 ## Commit 草稿（未執行；等 Alfred／主人授權）
 
 ```
-feat(huntboard): local sense gate + multi-cloud sources on hot path
+feat(huntspear): local sense gate + multi-cloud sources on hot path
 
 - Add local-sense, cloud-sources, sense-cards (methodology only)
 - Wire SKILL progressive disclosure + §4 technique/methodology split
@@ -55,4 +55,4 @@ feat(huntboard): local sense gate + multi-cloud sources on hot path
 - Map vault PB cards; sync method text; keep red line (no PoC/cookbook)
 ```
 
-已拆獨立 repo：https://github.com/sinwei802/huntboard
+已拆獨立 repo：https://github.com/sinwei802/huntspear

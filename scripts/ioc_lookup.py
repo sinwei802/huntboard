@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fixed-string lookup against the evidence-db index.
 
-Hunt-time query for huntboard. Prints HIT/MISS plus at most one entity
+Hunt-time query for huntspear. Prints HIT/MISS plus at most one entity
 brief. Never opens case notes, loot, or kit files. Path layout is parsed
 from the evidence-db skill table; this script does not embed a vault path.
 """
@@ -81,9 +81,9 @@ def evidence_db_skill_candidates() -> list[Path]:
         path = Path(env).expanduser()
         ordered.append(path if path.name == "SKILL.md" else path / "SKILL.md")
     here = Path(__file__).resolve()
-    huntboard_root = here.parent.parent
+    huntspear_root = here.parent.parent
     for parent in (
-        huntboard_root.parent,
+        huntspear_root.parent,
         Path.home() / ".grok" / "skills",
         Path.home() / ".claude" / "skills",
     ):

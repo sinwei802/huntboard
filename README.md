@@ -1,6 +1,6 @@
-# Huntboard
+# HuntSpear
 
-Thin **Huntboard** method / evidence-gate skill for authorized hunting — **not** an attack cookbook.
+Thin **HuntSpear** method / evidence-gate skill for authorized hunting — **not** an attack cookbook.
 
 This repository is the open methodology layer: local sense, thin method cards (evidence gates, handoffs, dead paths), and a mechanical `sense_gate`. It does **not** ship payloads, PoCs, or step-by-step exploit recipes.
 
@@ -9,23 +9,23 @@ This repository is the open methodology layer: local sense, thin method cards (e
 ### Clone
 
 ```bash
-git clone https://github.com/sinwei802/huntboard.git
+git clone https://github.com/sinwei802/huntspear.git
 ```
 
 ### Grok Bot
 
 ```bash
-ln -sfn /path/to/huntboard /home/box/agent-data/workflows/huntboard
+ln -sfn /path/to/huntspear /home/box/agent-data/workflows/huntspear
 ```
 
-Then select `huntboard` in chat (`/` or `@`), or trigger via its skill description.
+Then select `huntspear` in chat (`/` or `@`), or trigger via its skill description.
 
 ### Generic / Claude
 
 Set `$SKILL_ROOT` to the clone root (must contain `SKILL.md`, `references/`, `scripts/`), then load `SKILL.md`. Prefer a symlink into your harness; do not fork the tree.
 
 ```bash
-export SKILL_ROOT="$(pwd)/huntboard"
+export SKILL_ROOT="$(pwd)/huntspear"
 ```
 
 ### Verify
@@ -61,4 +61,4 @@ scripts/              # hunt_plan, sense_gate, helpers, tests
 
 ## Related
 
-Extracted from [`sinwei802/kali_cc_skills`](https://github.com/sinwei802/kali_cc_skills) (that repo’s `huntboard/` path is now a stub pointing here).
+Extracted from [`sinwei802/kali_cc_skills`](https://github.com/sinwei802/kali_cc_skills) (that repo’s `huntspear/` path is now a stub pointing here).

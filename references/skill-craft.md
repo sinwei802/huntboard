@@ -2,13 +2,13 @@
 
 > **不是戰鬥 skill、是 skill 作者的工藝參考。** 載入時機：你正在設計／修改本 skill 的紅線／閘門／HITL 規則，且目標讀者含弱模型（deepseek / mini / haiku 等）。不自動注入。
 > 來源合併：redthread-craft 6 工藝條（canonical）+ pentest-copilot-skill-craft 的 anti-blindspot design／named-peer auth／craft 輸出風格／Pitfalls。
-> 已丟棄：`version:` 版本號（rolling 慣例不寫版本）、`redthread-dev` workspace 路徑、Improvement Waves、communitytools clone——這些是舊 workspace 遺物，與 huntboard 無關。
+> 已丟棄：`version:` 版本號（rolling 慣例不寫版本）、`redthread-dev` workspace 路徑、Improvement Waves、communitytools clone——這些是舊 workspace 遺物，與 huntspear 無關。
 
 ## 1. 六條核心工藝條（canonical）
 
 ### 1.1 閘門位置上移 main skill（progressive disclosure 對弱模型無效）
 弱模型「該不該載入 reference」的判斷正是失敗的那件事——它傾向不載入。所以 HITL 紅線、衝突裁決、授權時效、寫入閘、失敗 2 次停**必須**在 main `SKILL.md` 頂部，不能只放 reference。main 寫精簡可機械判定短句 + 一句指回；reference 寫長反例。
-（huntboard 落實：頂部 🔴 R1–R8 必載區 + 🧠 T1–T3 思維卡。十二步長循環在 `thinking-loop.md`，不佔 main。）
+（huntspear 落實：頂部 🔴 R1–R8 必載區 + 🧠 T1–T3 思維卡。十二步長循環在 `thinking-loop.md`，不佔 main。）
 
 ### 1.2 可機械判定 vs 判斷題
 弱模型對判斷題永遠選對自己寬鬆的那邊。用可數／可機械判定的測試取代「算不算」：
@@ -22,11 +22,11 @@
 
 ### 1.4 契約 vs 強制（誠實邊界）
 skill 文字是**契約性宣告**、不是機械保證。明確分「契約宣告」與「runtime 強制」，給期望值（如「弱模型 HITL 上限約 6–7/10；到 9/10 需 runtime 硬停」），禁止「已鎖死／保證」這類絕對詞除非真有 runtime 配合。
-（huntboard 落實：R6 誠實邊界橫幅 + `p0-runtime-brief.md`。）
+（huntspear 落實：R6 誠實邊界橫幅 + `p0-runtime-brief.md`。）
 
 ### 1.5 可數 vs 不可數
 可數語句要明確啟動條件：「同一 error 類別連續 2 次 → 必須 HANDOFF」寫成「計數 = 2 時觸發，下一步必須 HANDOFF，禁止第 3 次」。「缺標籤視同未完成 HANDOFF」必須在 main、不只在 reference。
-（huntboard 落實：R2/R3 刻意分開，因為「新發現≠授權」與「授權時效」是兩種不同誤讀模式。）
+（huntspear 落實：R2/R3 刻意分開，因為「新發現≠授權」與「授權時效」是兩種不同誤讀模式。）
 
 ### 1.6 去重（不要把同一條寫在四處）
 弱模型遇矛盾選寬鬆那邊；多處重複也稀釋 main 最重要的幾條。canonical 一份（通常 main 頂部）+ 詳解一份（reference）+ 其他處改為「詳 §X」指回。每次加新規則前先 `grep`。

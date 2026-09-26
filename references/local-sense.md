@@ -29,7 +29,7 @@
 
 ## 2. 內建薄卡（短名）
 
-卡全文在 `references/sense-cards/`。Vault 鏡像：`資安/Huntboard 薄 playbook/`（LiveSync；以本 skill 樹為 runtime 真源，vault 供人讀與雙軌例行改善）。
+卡全文在 `references/sense-cards/`。Vault 鏡像：`資安/HuntSpear 薄 playbook/`（LiveSync；以本 skill 樹為 runtime 真源，vault 供人讀與雙軌例行改善）。
 
 | card_id | 檔 | 何時用 |
 |---|---|---|
@@ -55,7 +55,7 @@
 
 ## 4. 改善
 
-週一「Huntboard 知識雙軌維護」例行會改卡／廢卡／增雲端源。技能樹內卡變更寫入 `CHANGELOG.md`；禁止為交差堆手法卡。
+週一「HuntSpear 知識雙軌維護」例行會改卡／廢卡／增雲端源。技能樹內卡變更寫入 `CHANGELOG.md`；禁止為交差堆手法卡。
 
 ## 5. Vault 對照
 

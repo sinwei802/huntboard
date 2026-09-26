@@ -1,5 +1,5 @@
 ---
-name: huntboard
+name: huntspear
 description: >
   搜尋驅動的狩獵式滲透副駕駛，朝多 realm／多 host 作戰台（warboard）與共用 ops console 演化。
   適用於使用者提供明確 scope／目標、掃描輸出、foothold、憑證或 artifact，或說「開局／掃／打這台」，
@@ -9,7 +9,7 @@ description: >
   除必要技術內容外使用繁體中文。
 ---
 
-# huntboard — Search-Driven Hunting Copilot
+# huntspear — Search-Driven Hunting Copilot
 
 思考方式：「先觀察獵物 → 搜尋展開戰術 → 依計畫打一刀 → 回饋改計畫」，直到狩獵成功。
 戰術內容不寫死（觸發見 H2）。

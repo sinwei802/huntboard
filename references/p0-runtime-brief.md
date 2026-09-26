@@ -17,7 +17,7 @@
 同一 assistant turn 內，第一個「碰目標」工具結果返回後，harness 拒絕再調度更多碰目標工具（純 Research 可繼續）。判定靠 tool registry 的 `touches_target: bool`（terminal/web 預設 true，read/search 預設 false，skill 可覆寫）。實作於 tool 調度層（per-turn 計數器 + 拒絕佇列）。擋下約 80% 同輪連鎖。
 
 ### P0-RT-2　系統 prompt 優先級宣告
-huntboard 啟用 profile 時調整注入層順序（skill_frontmatter > skill_body > profile > finish_the_job），或對 finish-the-job 段 `when_skill_active: suppress|defer_to_skill`。解 R6 誠實邊界核心；改動大。
+huntspear 啟用 profile 時調整注入層順序（skill_frontmatter > skill_body > profile > finish_the_job），或對 finish-the-job 段 `when_skill_active: suppress|defer_to_skill`。解 R6 誠實邊界核心；改動大。
 
 ### P0-RT-3　輸出 lint
 回應含 tool call 但缺 `下一步 [EXECUTOR | APPROVAL]` 標籤，或標籤後仍有碰目標 tool call → 拒送重問。與 P0-RT-1 互補（一個卡 tool 發射、一個卡輸出形狀）。
@@ -31,11 +31,11 @@ huntboard 啟用 profile 時調整注入層順序（skill_frontmatter > skill_bo
 
 | 項 | 狀態 | 位置 |
 |---|---|---|
-| P0-RT-1 第二次碰目標拒絕 | **Hermes Hunter 選配已落地** | 選配 runtime plugin（套件 id `huntboard-runtime`，本 skill 的選配 runtime plugin id；在 Hermes profile 的 `plugins/` 下）。`./pentest-state`、`htb/` cwd、或本場已載入 huntboard 時武裝。不是 skill 套件的一部分；Claude 預設沒有 |
+| P0-RT-1 第二次碰目標拒絕 | **Hermes Hunter 選配已落地** | 選配 runtime plugin（套件 id `huntspear-runtime`，本 skill 的選配 runtime plugin id；在 Hermes profile 的 `plugins/` 下）。`./pentest-state`、`htb/` cwd、或本場已載入 huntspear 時武裝。不是 skill 套件的一部分；Claude 預設沒有 |
 | P0-RT-2 系統提示優先級 | **未完成** | plugin 只在 system 區塊**末尾**追加延期宣告，不能刪掉 Finishing the job |
 | P0-RT-3 輸出 lint | **未做** | `llm_execution` 形狀未證實；先靠 R7 契約 + P0-RT-1 |
 | P0-RT-4 寫入類命令確認 | **未做** | 仍靠 R4 契約 |
-| P0-RT-5a canonical 寫入閘 | **已落地** | 同 plugin；env `HUNTBOARD_WRITE_OK=1` 才放行 SKILL／契約層 |
+| P0-RT-5a canonical 寫入閘 | **已落地** | 同 plugin；env `HUNTSPEAR_WRITE_OK=1` 才放行 SKILL／契約層 |
 | P0-RT-5b promote lint | **未做** | auto-promote 維持關 |
 | 內建 loop hard_stop | **已開** | Hunter `tool_loop_guardrails.hard_stop_enabled=true`，`exact_failure=2` |
 
@@ -43,10 +43,10 @@ huntboard 啟用 profile 時調整注入層順序（skill_frontmatter > skill_bo
 
 ## 3. 【新增】P0-RT-5　skill 檔寫入閘 + 學習回路升級 lint
 
-對應 huntboard 的學習回路（§10 / `learning-loop.md`）。**這兩者現在都不存在 → 所以 auto-promote 維持關**（Q7）。
+對應 huntspear 的學習回路（§10 / `learning-loop.md`）。**這兩者現在都不存在 → 所以 auto-promote 維持關**（Q7）。
 
 ### (a) skill 檔寫入閘
-沒有 approval token 就擋掉對 huntboard **canonical 檔**（SKILL.md、契約層 ref、紅線）的編輯。類 P0-RT-4，但針對 skill 檔本身。目的：弱模型可能把 target-specific 噪音自我升級進 canonical——正是要防的污染。
+沒有 approval token 就擋掉對 huntspear **canonical 檔**（SKILL.md、契約層 ref、紅線）的編輯。類 P0-RT-4，但針對 skill 檔本身。目的：弱模型可能把 target-specific 噪音自我升級進 canonical——正是要防的污染。
 
 ```yaml
 skill_write_gate:

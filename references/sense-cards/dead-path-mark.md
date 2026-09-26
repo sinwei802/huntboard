@@ -36,6 +36,6 @@
 ## 去哪查
 
 - `evidence-gate`、`local-sense-memory`。
-- 戰情狀態慣例：以 Huntboard／warboard 欄位為準（本卡不規定 DB schema）。
+- 戰情狀態慣例：以 HuntSpear／warboard 欄位為準（本卡不規定 DB schema）。
 
 > 紅線：無 payload／PoC／逐步利用。

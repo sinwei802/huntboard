@@ -25,4 +25,4 @@
 **Retired**：連續健康檢查失敗、廣告／惡意下載為主、或純 exploit cookbook 且無標準對照價值。  
 **降级 watch**：不穩定或易混 writeup 劇透 → 不得單獨支撐下一刀。
 
-人讀長表可對 vault：`資安/Huntboard 薄 playbook/雲端資料來源登錄.md`。衝突時以**本檔 + CHANGELOG 較新條**為 runtime 準。
+人讀長表可對 vault：`資安/HuntSpear 薄 playbook/雲端資料來源登錄.md`。衝突時以**本檔 + CHANGELOG 較新條**為 runtime 準。

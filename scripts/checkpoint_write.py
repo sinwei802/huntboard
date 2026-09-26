@@ -425,7 +425,7 @@ def _hunt_plan_from_facts(raw: dict[str, Any]) -> hunt_plan.HuntPlan:
 
 def _meta_comment(meta: dict[str, Any]) -> str:
     payload = json.dumps(meta, separators=(",", ":"), ensure_ascii=False)
-    return f"<!-- huntboard-state: {payload} -->"
+    return f"<!-- huntspear-state: {payload} -->"
 
 
 def _table(headers: list[str], rows: list[list[str]]) -> str:

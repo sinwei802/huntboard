@@ -8,7 +8,7 @@
 
 ## 目的
 
-把 huntboard 從「markdown 五核心 bundle」演化成**持久化、多 realm／多 host 的 CTF／滲透作戰台（warboard）**共用真源：
+把 huntspear 從「markdown 五核心 bundle」演化成**持久化、多 realm／多 host 的 CTF／滲透作戰台（warboard）**共用真源：
 
 - SQLite 為共享真相（shared truth）
 - 主控台以**可篩選的 host／service 表**（assets ⋈ surfaces）＋ **focus／pending-approval 條**為主視圖

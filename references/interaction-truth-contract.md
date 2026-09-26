@@ -10,7 +10,7 @@
 | 角色 | 誰 | 職責 |
 |------|----|------|
 | **Commander** | 人類指揮 | 給 scope、用**寬鬆自然語**選方向／批准；不手改 DB／Markdown |
-| **Agent** | huntboard skill | 在已授權方向內執行；把結構化結果寫入 shared truth；提出 2–3 個正交下一刀；停等 |
+| **Agent** | huntspear skill | 在已授權方向內執行；把結構化結果寫入 shared truth；提出 2–3 個正交下一刀；停等 |
 
 實作／UX 驗證時，指揮以自然語決策；Agent 負責寫回 shared truth。
 
