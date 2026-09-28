@@ -28,6 +28,9 @@ CARD_FILES = (
     "web-app-evidence-ladder.md",
     "challenge-board-handoff.md",
     "session-break-rebuild.md",
+    "owner-root-flag-bar.md",
+    "doctrine-compatible-privesc.md",
+    "post-engagement-retro.md",
 )
 
 
@@ -135,6 +138,42 @@ class SenseGateTests(unittest.TestCase):
         good["hypothesis"] = "公開盤齊後須沿達標證據階梯交班"
         good["evidence_gate"] = "已有公開 API 或挑戰盤列表入戰情"
         good["dead_if"] = "無挑戰盤且無管理面線索 → 換面不硬開利用"
+        r = _run(good)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_pass_mqtt_oasis_cloud_pair(self) -> None:
+        good = dict(GOOD)
+        good["cloud_cross"] = ["src-mqtt-oasis", "src-rfc-mdn"]
+        good["hypothesis"] = "MQTT broker 語意需由標準與產品文件交叉確認"
+        good["evidence_gate"] = "已記錄 MQTT 版本或 broker 指紋與官方文件對照"
+        good["dead_if"] = "無 broker 指紋且文件語意無法對上 → DEAD:mqtt-unfingerprinted"
+        r = _run(good)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_pass_owner_root_flag_bar_card(self) -> None:
+        good = dict(GOOD)
+        good["card_id"] = "owner-root-flag-bar"
+        good["hypothesis"] = "主人尺只認 root flag，不以中間旗冒充達標"
+        good["evidence_gate"] = "已記錄 root flag 的完整證據鏈與讀取時刻"
+        good["dead_if"] = "未讀到 root flag → DEAD:owner-root-not-reached"
+        r = _run(good)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_pass_doctrine_compatible_privesc_card(self) -> None:
+        good = dict(GOOD)
+        good["card_id"] = "doctrine-compatible-privesc"
+        good["hypothesis"] = "提權續面須先確認可驗證的設定錯誤且符合禁 PoC 編制"
+        good["evidence_gate"] = "已記錄具名 misconfig 與授權的單段驗證邊界"
+        good["dead_if"] = "只剩 CVE 或 PoC 路徑 → DEAD:doctrine-incompatible"
+        r = _run(good)
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+    def test_pass_post_engagement_retro_card(self) -> None:
+        good = dict(GOOD)
+        good["card_id"] = "post-engagement-retro"
+        good["hypothesis"] = "場次結案後需把成功與失敗都轉成可追蹤改進"
+        good["evidence_gate"] = "已記錄至少一項 finding、程序或靶場改進與落點"
+        good["dead_if"] = "無可追蹤改進落點 → DEAD:retro-not-actionable"
         r = _run(good)
         self.assertEqual(r.returncode, 0, r.stderr)
 

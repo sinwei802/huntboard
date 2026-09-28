@@ -43,6 +43,7 @@ ACTIVE_CLOUD_IDS = frozenset(
         "src-rfc-mdn",
         "src-cisa-kev",
         "src-websearch",
+        "src-mqtt-oasis",
     }
 )
 
