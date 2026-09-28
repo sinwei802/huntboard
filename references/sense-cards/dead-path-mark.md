@@ -28,6 +28,13 @@
 | `DEAD:no-consumer` | 動作面無消費者／無副作用證據 |
 | `GAP:version-unknown` | 缺產品版本，不准瞎猜 CVE |
 | `GAP:no-local-playbook` | 本地無卡可載，需補卡或公開查法，不硬猜 |
+| `DEAD:doctrine-incompatible` | 禁 PoC 編制下無 misconfig 可續面（見 doctrine-compatible-privesc） |
+| `DEAD:platform-deny` | 面相容但指揮／平台拒批利用類動作（勿與上列混稱） |
+| `DEAD:no-session-path` | 公開盤齊但無合法身分路徑且未獲重建批 |
+| `DEAD:auth-readonly-exhausted` | 認證後只讀耗盡，需另批窄目標 |
+| `DEAD:methodology-breach` | 方法論破口（payload／PoC／writeup 當主源） |
+| `DEAD:cve-version-mismatch` | CVE 命中但版本不合 |
+| `DEAD:advisory-only` | 僅有公告、無授權／無驗證計畫 |
 
 每筆至少一行：`標記｜關閉的假設｜關鍵觀測｜重開條件或「不重開」`。
 

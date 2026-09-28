@@ -1,3 +1,11 @@
+## 2026-09-28 — 週一雙軌維護（vault 對齊＋雲端增源）
+
+- vault `資安/HuntSpear 薄 playbook` 與 sense-cards 漂移收斂（skill 為戰鬥真源）：提權分流第三態、禁 PoC 交叉段、主人尺／Web 階梯／复盤用語去內部場次標。
+- `dead-path-mark`：補齊 `doctrine-incompatible`／`platform-deny`／session／advisory 類標記（方法層，無利用步驟）。
+- `public-doc-cve-lookup`：MQTT 指紋時指向 `src-mqtt-oasis`。
+- `cloud-sources`：健康檢查全過；新增 active `src-mqtt-oasis`（OASIS MQTT／Mosquitto 官方文件；禁 exploit）。
+- 索引補掛站穩後地圖／提權證據門。無 payload／PoC。
+
 - 2026-09-26：`doctrine-compatible-privesc` 補第三態 `DEAD:platform-deny`（有 misconfig 面但程序／平台拒批之抽象形）。
 ## 2026-09-26 — 成敗都迭代＋提權分流卡
 
