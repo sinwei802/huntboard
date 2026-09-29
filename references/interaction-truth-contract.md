@@ -3,7 +3,7 @@
 ## Status
 
 **Status: draft**（v0）。與 `warboard-schema.md` 配套的 warboard 共用真源互動契約；實作可能落後於本檔。  
-尚未接入 production hunting 熱路徑。驗收以對齊本契約的真實 console 為準。
+本機網頁是表＋focus 條（怎麼開見 `USER.md`）。回合裡的決策寫回仍由 agent 走 `warboard.py apply`，網頁不代寫授權。
 
 ## 角色
 
@@ -89,4 +89,4 @@
 
 ## Status notes
 
-本契約為 OSS 維護草案。實作對齊 schema 並經真實 console 驗證後，再決定是否把 warboard 接入 session 啟動與 HANDOFF 寫回。現階段 hunting 熱路徑仍遵守 `SKILL.md` 與 markdown `./pentest-state/`。
+本契約為 OSS 維護草案。hunting 熱路徑的真源是 `./pentest-state/warboard.sqlite`（`SKILL.md`）。網頁只讀這份庫，並能切換進行中的戰役與名稱／範圍。

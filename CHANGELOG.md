@@ -1,3 +1,10 @@
+## 2026-09-29 — 本機 warboard 網頁
+
+- `scripts/warboard_console.py`、`console/board.html`：預設只聽 `127.0.0.1:8765`，讀 `warboard.sqlite`。主機／服務表、態勢、賭注、事件依回合摺疊。
+- 頁面可把一場設為進行中（其他進行中改暫停），並改名稱與範圍。戰鬥列仍只由 `warboard.py apply` 寫入。
+- 敏感 loot 的 notes、事件裡的秘密欄位不進頁面。
+- 無 payload／PoC。
+
 ## 2026-09-29 — sqlite 唯一真源（markdown bundle 脫鉤）
 
 - 熱路徑改走 `scripts/warboard.py` opening／brief／apply；`sense_gate.py --db` 讀庫擋 H1 無面、H2 無賭注、R2 同輪新秘密。

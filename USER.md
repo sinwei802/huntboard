@@ -14,9 +14,18 @@
 - 高風險下一刀前再跑 `sense_gate.py --db … --action exploit`（可加 `--check proposal.json`）。fail＝不准出利用級選項。閘門讀庫，不信提案自述。
 - 舊 markdown 五核心檔（`asset-graph.md` 等）是負債。開局只會警告 `markdown_debt=… unused`，不當 HAVE。
 
-## warboard console（可選）
+## warboard console
 
-- 若你有本地 warboard（作戰台）console，指向你的 engagement SQLite（`./pentest-state/warboard.sqlite`）。
+在要看的那份庫旁邊開本機頁面：
+
+```bash
+python3 "$SKILL_ROOT/scripts/warboard_console.py" --state-root ./pentest-state
+```
+
+- 預設只聽 `http://127.0.0.1:8765/`。庫是 `./pentest-state/warboard.sqlite`。
+- 頁面上可以切換戰役、把一場設為進行中（其他進行中會改成暫停）、改名稱與範圍。
+- 主機、服務、賭注、材料、事件仍由 `warboard.py apply` 寫入。這頁不代寫授權。
+- 事件依回合摺疊，最新一回預設打開。敏感材料的 notes、事件裡的秘密欄位不進頁面。
 - Schema／互動契約：`references/warboard-schema.md`、`references/interaction-truth-contract.md`（不必每回合讀）。
 
 ## 離線破解偏好（可選）
@@ -35,4 +44,4 @@
 
 ## English (short)
 
-Operator preferences (not combat gates). Opening path: `warboard.py opening` → `hunt_plan.py opening` → `sense_gate.py --db`. Sole truth is `./pentest-state/warboard.sqlite`. Markdown core files are unused debt. Prefer offline cracking on a GPU box (paths/hints only). Red line: no PoC / payload / exploit cookbook.
+Operator preferences (not combat gates). Opening path: `warboard.py opening` → `hunt_plan.py opening` → `sense_gate.py --db`. Sole truth is `./pentest-state/warboard.sqlite`. Local board: `warboard_console.py` (see above). Markdown core files are unused debt. Prefer offline cracking on a GPU box (paths/hints only). Red line: no PoC / payload / exploit cookbook.

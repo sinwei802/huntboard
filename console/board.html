@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HuntSpear 作戰台</title>
+<style>
+  :root {
+    --bg: #14160f;
+    --panel: #1c1f16;
+    --panel-2: #23271c;
+    --line: #3a3f30;
+    --text: #ebe6d6;
+    --muted: #9a947f;
+    --brass: #e0b15a;
+    --ok: #9cbe86;
+    --warn: #d9924a;
+    --bad: #d46a60;
+    --chip: #2c3124;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.45 ui-sans-serif, "Noto Sans CJK TC", "Source Han Sans TC", sans-serif;
+  }
+  header, main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+  header { padding: 22px 0 8px; }
+  h1 { font-size: 22px; font-weight: 650; margin: 0; letter-spacing: 0.01em; }
+  h2 { font-size: 15px; margin: 0 0 10px; font-weight: 650; }
+  .sub, .muted { color: var(--muted); }
+  .sub { margin: 6px 0 0; }
+  .path { font: 12px/1.4 ui-monospace, monospace; color: var(--muted); margin-top: 8px; word-break: break-all; }
+  .bar, .panel, .stance {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .bar { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; padding: 14px; margin: 14px 0; }
+  .bar .grow { flex: 1 1 200px; min-width: 0; }
+  .bar textarea { min-height: 38px; height: 38px; }
+  .actions { flex: 1 1 280px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  label select, label input, label textarea { display: block; width: 100%; margin-top: 4px; }
+  select, input, textarea, button {
+    font: inherit;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  select, input, textarea { padding: 8px 10px; width: 100%; }
+  textarea { min-height: 72px; resize: vertical; }
+  button { padding: 8px 12px; cursor: pointer; background: var(--brass); color: #1b160c; border: 0; font-weight: 650; }
+  button.quiet { background: transparent; color: var(--text); border: 1px solid var(--line); }
+  button:disabled { opacity: 0.55; cursor: default; }
+  .grow { flex: 1 1 220px; }
+  .actions { display: flex; gap: 8px; align-items: center; }
+  .stance { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px 16px; padding: 14px; margin-bottom: 14px; }
+  .stance b { display: block; font-size: 12px; color: var(--muted); font-weight: 550; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip {
+    background: var(--chip);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font: 12px/1.6 ui-monospace, monospace;
+  }
+  .chip.warn { color: var(--warn); }
+  .chip.ok { color: var(--ok); }
+  .layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.9fr); gap: 14px; }
+  .panel { padding: 14px; margin-bottom: 14px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .filters label { flex: 1 1 140px; }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; min-width: 680px; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; white-space: nowrap; }
+  th { color: var(--muted); font-weight: 550; font-size: 12px; }
+  .mono { font: 12px/1.4 ui-monospace, monospace; }
+  .card { padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .card:last-child { border-bottom: 0; }
+  .card p { margin: 4px 0 0; }
+  details { border-top: 1px solid var(--line); padding: 8px 0; }
+  details summary { cursor: pointer; }
+  .banner {
+    background: #3a2c18;
+    color: var(--brass);
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin: 0 0 12px;
+  }
+  .empty { padding: 28px 8px 40px; }
+  .err { color: var(--bad); min-height: 1.2em; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    header, main { width: min(1180px, calc(100% - 20px)); }
+    .filters label { flex-basis: 100%; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>HuntSpear 作戰台</h1>
+  <p class="sub">看這份庫裡的戰役。主機、賭注和事件由副駕駛寫入。這頁只切換正在打的那一場，以及名稱和範圍。</p>
+  <div id="meta" class="path"></div>
+</header>
+<main id="app"></main>
+<script>
+const STATUS = {
+  draft: "草稿", active: "進行中", paused: "暫停", closed: "結束",
+  unknown: "未知", reachable: "可達", mapped: "已標", foothold: "立足",
+  user: "使用者", root: "最高", oos: "不做",
+  unseen: "未看", seen: "已看", fingerprinted: "已辨", interesting: "值得追",
+  none: "沒有", read: "已讀", unread: "未讀", deferred: "先擱",
+  open: "開著", supported: "有支持", refuted: "已否", scoped_out: "不做",
+  proposed: "提案", achieved: "達到", abandoned: "放棄", blocked: "堵住",
+  orient: "定向", map: "繪面", probe: "試探", exploit: "深打", persist: "留下",
+  decide: "待決", idle: "待命"
+};
+const state = { selectedId: null, filters: { realm: "", asset: "", surface: "" }, openRounds: new Set() };
+
+function gloss(value) {
+  if (value == null || value === "") return "—";
+  return STATUS[value] || String(value);
+}
+function el(tag, attrs, kids) {
+  const node = document.createElement(tag);
+  Object.entries(attrs || {}).forEach(([key, value]) => {
+    if (key === "class") node.className = value;
+    else if (key === "text") node.textContent = value == null ? "" : String(value);
+    else node.setAttribute(key, value);
+  });
+  (kids || []).forEach((kid) => node.append(kid instanceof Node ? kid : document.createTextNode(String(kid))));
+  return node;
+}
+function field(title, value) {
+  return el("div", {}, [el("b", { text: title }), document.createTextNode(value || "—")]);
+}
+
+async function load(force) {
+  const editing = document.activeElement && document.activeElement.closest("[data-edit]");
+  if (!force && editing) return;
+  const query = state.selectedId ? "?engagement=" + encodeURIComponent(state.selectedId) : "";
+  let data;
+  try {
+    const res = await fetch("/api/board" + query, { cache: "no-store" });
+    data = await res.json();
+  } catch (err) {
+    document.getElementById("app").replaceChildren(el("p", { class: "err", text: "這頁讀不到庫。" }));
+    return;
+  }
+  if (data.selected_id) state.selectedId = data.selected_id;
+  if (data.selected_id && state.boundId !== data.selected_id) {
+    state.boundId = data.selected_id;
+    state.openRounds = new Set();
+    state.filters = { realm: "", asset: "", surface: "" };
+  }
+  paint(data);
+}
+
+function paint(data) {
+  const meta = document.getElementById("meta");
+  meta.textContent = data.db || "";
+  const app = document.getElementById("app");
+  app.replaceChildren();
+  if (data.markdown_debt && data.markdown_debt.length) {
+    app.append(el("div", { class: "banner", text: "舊 markdown 還在磁碟上，不當這場的前提：" + data.markdown_debt.join("、") }));
+  }
+  if (data.empty) {
+    const why = data.reason === "db_missing" ? "還沒有這份庫。" : "庫裡還沒有戰役。";
+    app.append(el("div", { class: "empty" }, [
+      el("p", { text: why + "在目標目錄跑 warboard.py opening 之後，重新整理這頁。" }),
+      el("button", { class: "quiet", type: "button", text: "重新整理" })
+    ]));
+    app.querySelector("button").addEventListener("click", () => load(true));
+    return;
+  }
+  app.append(toolbar(data), stance(data), layout(data), events(data));
+}
+
+function toolbar(data) {
+  const eng = data.engagement;
+  const pick = el("select", { "data-edit": "1" });
+  data.engagements.forEach((item) => {
+    const opt = el("option", { value: item.id, text: item.name + " · " + gloss(item.status) });
+    if (item.id === data.selected_id) opt.selected = true;
+    pick.append(opt);
+  });
+  pick.addEventListener("change", () => {
+    state.selectedId = pick.value;
+    load(true);
+  });
+  const name = el("input", { "data-edit": "1", value: eng.name, maxlength: "200" });
+  const scope = el("textarea", { "data-edit": "1" });
+  scope.value = eng.scope_notes || "";
+  const save = el("button", { type: "button", text: "儲存名稱與範圍" });
+  const activate = el("button", {
+    type: "button",
+    class: "quiet",
+    text: eng.status === "active" ? "這場進行中" : "設為進行中"
+  });
+  activate.disabled = eng.status === "active";
+  const note = el("div", { class: "err" });
+  save.addEventListener("click", () => post("/api/engagements/" + eng.id, {
+    name: name.value, scope_notes: scope.value
+  }, note));
+  activate.addEventListener("click", () => post("/api/engagements/" + eng.id + "/activate", {}, note));
+  const refresh = el("button", { class: "quiet", type: "button", text: "重新整理" });
+  refresh.addEventListener("click", () => load(true));
+  return el("section", { class: "bar" }, [
+    el("div", { class: "grow" }, [el("label", { text: "戰役" }, [pick])]),
+    el("div", { class: "grow" }, [el("label", { text: "名稱" }, [name])]),
+    el("div", { class: "grow" }, [el("label", { text: "範圍" }, [scope])]),
+    el("div", { class: "actions" }, [save, activate, refresh]),
+    note
+  ]);
+}
+
+async function post(url, body, note) {
+  note.textContent = "";
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  const payload = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    note.textContent = payload.error || "沒寫進去";
+    return;
+  }
+  load(true);
+}
+
+function stance(data) {
+  const camp = data.campaign || {};
+  const focus = data.focus || {};
+  const box = el("section", { class: "stance" }, [
+    field("目標", camp.goal),
+    field("手上有", camp.have),
+    field("下一探", camp.next_probe),
+    field("材料", gloss(camp.materials)),
+    field("回合", String(data.round ?? 0)),
+    field("注意力", gloss(focus.phase) + (focus.summary ? " · " + focus.summary : "")),
+    field("看著", focus.active_asset || "—"),
+    field("目標列", focus.active_goal || "—")
+  ]);
+  const chips = el("div", { class: "chips" });
+  const gaps = data.gaps || [];
+  chips.append(el("span", { class: gaps.length ? "chip warn" : "chip ok", text: gaps.length ? "缺口 " + gaps.join("、") : "缺口沒有" }));
+  Object.entries(camp.campaign_surfaces || {}).forEach(([name, value]) => {
+    chips.append(el("span", { class: "chip", text: name + " " + gloss(value) }));
+  });
+  (focus.options || []).forEach((opt) => {
+    const mark = opt.id && opt.id === focus.selected_option_id ? "已選 " : "待決 ";
+    chips.append(el("span", { class: "chip", text: mark + (opt.label || opt.id || "") }));
+  });
+  const wrap = el("div", {}, [box, chips]);
+  return wrap;
+}
+
+function layout(data) {
+  return el("div", { class: "layout" }, [tablePanel(data), side(data)]);
+}
+
+function tablePanel(data) {
+  const rows = data.rows || [];
+  const realms = [...new Set(rows.map((row) => row.realm).filter(Boolean))];
+  const realmPick = selectOf("領域", ["", ...realms], state.filters.realm, (value) => { state.filters.realm = value; paint(data); });
+  const assetPick = selectOf("主機狀態", ["", "unknown", "reachable", "mapped", "foothold", "user", "root", "oos"], state.filters.asset, (value) => { state.filters.asset = value; paint(data); });
+  const surfacePick = selectOf("服務狀態", ["", "unseen", "seen", "fingerprinted", "interesting", "oos"], state.filters.surface, (value) => { state.filters.surface = value; paint(data); });
+  const filtered = rows.filter((row) => {
+    if (state.filters.realm && row.realm !== state.filters.realm) return false;
+    if (state.filters.asset && row.asset_status !== state.filters.asset) return false;
+    if (state.filters.surface && row.surface_status !== state.filters.surface) return false;
+    return true;
+  });
+  const hosts = new Set(filtered.map((row) => row.asset_id));
+  const table = el("table", {}, [
+    el("thead", {}, [el("tr", {}, ["領域", "主機", "主機狀態", "服務", "埠", "路徑", "辨識", "服務狀態"].map((title) => el("th", { text: title })))])
+  ]);
+  const body = el("tbody");
+  let lastHost = null;
+  filtered.forEach((row) => {
+    const same = row.asset_id === lastHost;
+    lastHost = row.asset_id;
+    body.append(el("tr", {}, [
+      el("td", { text: same ? "" : row.realm }),
+      el("td", { text: same ? "" : (row.host || "—") }),
+      el("td", { text: same ? "" : gloss(row.asset_status) }),
+      el("td", { class: "mono", text: row.surface_kind || "—" }),
+      el("td", { class: "mono", text: row.port == null ? "—" : String(row.port) }),
+      el("td", { class: "mono", text: row.path_or_name || "—" }),
+      el("td", { text: row.banner_or_product || "—" }),
+      el("td", { text: row.surface_id ? gloss(row.surface_status) : "—" })
+    ]));
+  });
+  table.append(body);
+  return el("section", { class: "panel" }, [
+    el("h2", { text: "主機與服務 · " + hosts.size + " 台 · " + filtered.length + " 列" }),
+    el("div", { class: "filters" }, [realmPick, assetPick, surfacePick]),
+    filtered.length ? el("div", { class: "scroll" }, [table]) : el("p", { class: "muted", text: "這場還沒有主機，或篩選把列濾光了。" })
+  ]);
+}
+
+function selectOf(title, values, current, onChange) {
+  const pick = el("select", { "data-edit": "1" });
+  values.forEach((value) => {
+    const label = value === "" ? "全部" : gloss(value);
+    const opt = el("option", { value: value, text: label });
+    if (value === current) opt.selected = true;
+    pick.append(opt);
+  });
+  pick.addEventListener("change", () => onChange(pick.value));
+  return el("label", { text: title }, [pick]);
+}
+
+function side(data) {
+  const wrap = el("div");
+  wrap.append(listPanel("賭注", data.hypotheses, (item) => el("div", { class: "card" }, [
+    el("strong", { text: gloss(item.status) + " · " + item.claim }),
+    el("p", { class: "muted", text: "預期 " + (item.expect || "—") }),
+    el("p", { class: "muted", text: "關掉若 " + (item.kill_if || "—") })
+  ])));
+  wrap.append(listPanel("目標", data.goals, (item) => el("div", { class: "card" }, [
+    el("strong", { text: gloss(item.status) + " · " + item.title }),
+    item.success_criteria ? el("p", { class: "muted", text: item.success_criteria }) : el("span")
+  ])));
+  wrap.append(listPanel("身份", data.identities, (item) => el("div", { class: "card" }, [
+    el("strong", { text: item.label }),
+    el("p", { class: "muted", text: gloss(item.kind) + " · " + gloss(item.privilege_band) })
+  ])));
+  wrap.append(listPanel("材料（密文不顯示）", data.loot, (item) => el("div", { class: "card" }, [
+    el("strong", { text: item.label }),
+    el("p", { class: "mono muted", text: item.kind + " · " + item.sensitivity + (item.storage_ref ? " · " + item.storage_ref : "") })
+  ])));
+  return wrap;
+}
+
+function listPanel(title, items, render) {
+  const body = (items && items.length) ? items.map(render) : [el("p", { class: "muted", text: "沒有" })];
+  return el("section", { class: "panel" }, [el("h2", { text: title }), ...body]);
+}
+
+function events(data) {
+  const rounds = (data.rounds || []).filter((round) => round.events && round.events.length);
+  const box = el("section", { class: "panel" }, [el("h2", { text: "事件" })]);
+  if (!rounds.length) {
+    box.append(el("p", { class: "muted", text: "還沒有事件。" }));
+    return box;
+  }
+  const keys = rounds.map((round, index) => String(round.n) + ":" + index);
+  if (!keys.some((key) => state.openRounds.has(key))) state.openRounds.add(keys[keys.length - 1]);
+  rounds.forEach((round, index) => {
+    const key = keys[index];
+    const open = state.openRounds.has(key);
+    const det = el("details");
+    if (open) det.open = true;
+    det.append(el("summary", { text: "第 " + round.n + " 回 · " + round.events.length + " 筆" }));
+    round.events.forEach((ev) => {
+      det.append(el("div", { class: "card" }, [
+        el("strong", { text: ev.kind + " · " + ev.actor }),
+        el("p", { class: "mono muted", text: ev.created_at || "" }),
+        el("p", { class: "mono", text: JSON.stringify(ev.body) })
+      ]));
+    });
+    det.addEventListener("toggle", () => {
+      if (det.open) state.openRounds.add(key);
+      else state.openRounds.delete(key);
+    });
+    box.append(det);
+  });
+  return box;
+}
+
+load(true);
+setInterval(() => load(false), 4000);
+</script>
+</body>
+</html>

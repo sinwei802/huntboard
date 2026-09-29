@@ -17,7 +17,7 @@
 
 ## 非目標（v0）
 
-- 不實作 production UI／地圖視圖
+- 地圖視圖仍延後。本機表＋focus 網頁見 `USER.md`，啟動方式不在本檔重複。
 - 不取代現行 hunting 熱路徑的 R1–R8／H1–H4 行為（本檔僅定義未來真源）
 - 不要求指揮手改 SQL／Markdown
 - 不把「階段」寫成必經流水線欄位
@@ -453,5 +453,5 @@ WHERE engagement_id = :engagement_id;
 ## Status notes
 
 本檔為 **draft v0**：schema／列舉供實作與實用後修改；驗收以對齊本 schema 的真實 console／SQLite 為準，不以紙上 mock 腳本為準。  
-**尚未**接入 hunting skill 執行迴圈；熱路徑仍以 `state-schemas.md`／markdown bundle 為準。  
+熱路徑真源是 `scripts/warboard.py` 與 `./pentest-state/warboard.sqlite`。  
 契約行為見同目錄 `interaction-truth-contract.md`。
