@@ -2,8 +2,8 @@
 
 ## Status
 
-**Status: draft**（v0）。Warboard 共用真源的 schema 草案；實作可能落後於本檔。  
-**尚未**強制接入 hunting 熱路徑。欄位名英文 snake_case；語意說明繁中。
+**Status: current**（v0 runtime）。`./pentest-state/warboard.sqlite` 是 hunting 熱路徑唯一真源。  
+欄位名英文 snake_case；語意說明繁中。實作：`scripts/warboard.py`、`scripts/warboard_schema.sql`。
 
 
 ## 目的
@@ -22,16 +22,16 @@
 - 不要求指揮手改 SQL／Markdown
 - 不把「階段」寫成必經流水線欄位
 
-## 與既有 `./pentest-state/` 的關係（共存）
+## 與既有 `./pentest-state/` 的關係
 
 | 軌道 | 路徑慣例 | 角色 |
 |------|----------|------|
-| **現行** markdown bundle | `./pentest-state/` 五核心檔＋可選 `hunt-plan.md` | 仍為 hunting skill 執行時狀態；見 `state-schemas.md` |
-| **新** warboard SQLite | `./pentest-state/warboard.sqlite`（相對 engagement cwd） | 未來共用真源；以本 draft schema 為契約，實作／console 驗證 |
+| **現行** warboard SQLite | `./pentest-state/warboard.sqlite` | hunting 熱路徑唯一真源 |
+| **負債** markdown bundle | 五核心檔＋可選 `hunt-plan.md` | 考古；見 `state-schemas.md`。開局若還在磁碟只警告 `markdown_debt`，不當 HAVE |
 
-- **禁止刪除**既有 `state-schemas.md` 與 markdown 寫入路徑，直到正式遷移完成。
-- 兩軌並存期間：設計與 console 驗證讀本檔；戰鬥熱路徑仍走 markdown bundle。
-- 遷移後：warboard 為唯一 shared truth；markdown 可降為匯出／唯讀快照（另議）。
+- 禁止把 markdown bundle／手寫 md 當本期前提。
+- `load_state_bundle.py`／`checkpoint_write.py` 留著給舊測試與考古，戰鬥熱路徑不准呼叫。
+- loot 本體仍放 `./pentest-state/loot/`；庫裡只記 `storage_ref` 與 label，不存秘密材料。
 
 ---
 

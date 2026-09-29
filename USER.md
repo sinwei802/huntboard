@@ -7,14 +7,16 @@
 - 把本目錄當成 `$SKILL_ROOT`（必須含 `SKILL.md`、`references/`、`scripts/`）。
 - 用 symlink 把同一棵樹掛進 agent harness；不要 fork 複製。
 - 開局熱路徑：
-  1. `python3 "$SKILL_ROOT/scripts/hunt_plan.py" opening "…"`
-  2. `python3 "$SKILL_ROOT/scripts/load_state_bundle.py"`
-  3. 再碰目標
-- 提案下一動作前：若本 session 尚未載過，先讀 `references/local-sense.md`；欄位缺漏時跑 `python3 "$SKILL_ROOT/scripts/sense_gate.py" --check <proposal.json>`（fail＝不得輸出利用級選項）。
+  1. `python3 "$SKILL_ROOT/scripts/warboard.py" opening "…"`
+  2. `python3 "$SKILL_ROOT/scripts/hunt_plan.py" opening "…"`
+  3. `python3 "$SKILL_ROOT/scripts/sense_gate.py" --db ./pentest-state/warboard.sqlite --action observe`
+- 唯一真源：`./pentest-state/warboard.sqlite`。寫入用 `warboard.py apply --facts <json>`。
+- 高風險下一刀前再跑 `sense_gate.py --db … --action exploit`（可加 `--check proposal.json`）。fail＝不准出利用級選項。閘門讀庫，不信提案自述。
+- 舊 markdown 五核心檔（`asset-graph.md` 等）是負債。開局只會警告 `markdown_debt=… unused`，不當 HAVE。
 
 ## warboard console（可選）
 
-- 若你有本地 warboard（作戰台）console，指向你的 engagement SQLite（`./pentest-state/warboard.sqlite` 或 harness 路徑）。
+- 若你有本地 warboard（作戰台）console，指向你的 engagement SQLite（`./pentest-state/warboard.sqlite`）。
 - Schema／互動契約：`references/warboard-schema.md`、`references/interaction-truth-contract.md`（不必每回合讀）。
 
 ## 離線破解偏好（可選）
@@ -27,9 +29,10 @@
 ## 紅線
 
 - 本樹無 PoC、payload、逐步利用食譜；操作者也不應要求 agent 把這類內容寫進 skill。
+- markdown bundle 不要再當本期前提。
 
 ---
 
 ## English (short)
 
-Operator preferences (not combat gates). Load via `$SKILL_ROOT` + symlink; opening path uses `hunt_plan.py` → `load_state_bundle.py`. Optional local **warboard** console against engagement SQLite. Prefer offline cracking on a GPU box (paths/hints only — no crack recipes here). Red line: no PoC / payload / exploit cookbook in this tree.
+Operator preferences (not combat gates). Opening path: `warboard.py opening` → `hunt_plan.py opening` → `sense_gate.py --db`. Sole truth is `./pentest-state/warboard.sqlite`. Markdown core files are unused debt. Prefer offline cracking on a GPU box (paths/hints only). Red line: no PoC / payload / exploit cookbook.

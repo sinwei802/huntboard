@@ -5,7 +5,7 @@ description: >
   適用於使用者提供明確 scope／目標、掃描輸出、foothold、憑證或 artifact，或說「開局／掃／打這台」，
   並要求先觀察、即時搜尋展開戰術、依計畫逐步執行並依回饋調整。戰術不寫死（詳 H2）。
   一則使用者訊息一個已授權方向；決策邊界才停。HANDOFF 結束的是這個方向不是這場狩獵。
-  狀態存放於 ./pentest-state/（現行 markdown bundle；warboard SQLite 為草案共用真源，見 references）。
+  狀態只認 ./pentest-state/warboard.sqlite。舊 markdown bundle 是負債，不當本期前提。
   除必要技術內容外使用繁體中文。
 ---
 
@@ -52,6 +52,9 @@ description: >
 **R5｜同一 error 類 ×2 → HANDOFF；第三次禁止換工具皮。**  
 HANDOFF 前可用 1–2 個 query 查還沒試過的（error + 環境 + 現成工具）；此搜尋不受 §6.1 預算限制。
 
+**R6｜狀態只認 warboard SQLite。**  
+唯一真源是 `./pentest-state/warboard.sqlite`。沒寫進庫的不是 HAVE。禁止把 markdown bundle／手寫 md 當本期前提。讀庫不形成目標授權。
+
 **R7｜HANDOFF 必須帶 `[EXECUTOR｜APPROVAL]`。**  
 建議選項（選項 1）缺標籤＝未完成。輸出後禁止任何 tool call。
 
@@ -62,7 +65,7 @@ HANDOFF 前可用 1–2 個 query 查還沒試過的（error + 環境 + 現成�
 
 ## 戰役　【必須為真·不必印卡】
 
-相位與欄位以 `scripts/hunt_plan.py` 為真源；怎麼走見 `hunt-loop.md`。指揮只要聽懂發生什麼、計畫怎麼改、下一探是什麼。
+相位與欄位以 `scripts/hunt_plan.py` 為機械真源；持久化以 warboard 為準。怎麼走見 `hunt-loop.md`。指揮只要聽懂發生什麼、計畫怎麼改、下一探是什麼。
 
 - **H1** 未完成觀察不得深打：HAVE 已寫，觀察面皆 `seen`／`oos`，手上材料不是 `unread`。新觀看者（新 identity／新 command execution）進 HAVE → 該觀看者資產面未標完前，只准具名剩餘觀察 batch。詳 `hunt-loop.md` §2.4。
 - **H2** 未展開戰術不得深打：Hunt Plan 已有能力 Goal、活躍賭注、`next_probe`。戰術由即時搜尋展開。HAVE 或已觀測服務裡出現目錄／域身份／命名服務時，那些事實就是 DESIGN 搜尋鍵——不等 Stall，不背手法表。
@@ -85,17 +88,16 @@ HANDOFF 前可用 1–2 個 query 查還沒試過的（error + 環境 + 現成�
 - 腳本輸出看不懂開局意圖、觀察是否夠、戰役相位：`references/hunt-loop.md`
 - 觀察完成、目錄／身份進 HAVE、Goal 剛換：`references/tactical-search.md`
 - 不熟、清單外、「沒寫所以沒路」、看似熟悉未 lens：`references/anti-blindspot.md`
-- **準備提案下一刀／下一方向（含 HANDOFF 選項成形）且本 session 尚未讀過**：先讀 `references/local-sense.md`；必要時再讀對應 `references/sense-cards/<card_id>.md`。開局純 OBSERVE／fingerprint 不必載。缺 sense 欄位時跑 `python3 "$SKILL_ROOT/scripts/sense_gate.py" --check <提案.json>`（fail＝不得輸出利用級選項）
+- **準備提案下一刀／下一方向（含 HANDOFF 選項成形）且本 session 尚未讀過**：先讀 `references/local-sense.md`；必要時再讀對應 `references/sense-cards/<card_id>.md`。開局純 OBSERVE／fingerprint 不必載。缺 sense 欄位時跑 `python3 "$SKILL_ROOT/scripts/sense_gate.py" --check <提案.json>`；高風險再加 `--db ./pentest-state/warboard.sqlite --action <類>`（fail＝不得輸出利用級選項。閘門讀庫，不信提案自述）
 - **訓練用 Web／挑戰盤**：公開 observe 齊且挑戰／任務列表已入 HAVE → 讀 `sense-cards/challenge-board-handoff`（必要時 `web-app-evidence-ladder`／`session-break-rebuild`）；禁止只交「再觀察」當建議主選項
 - **結案後（成敗皆然）**：讀 `sense-cards/post-engagement-retro`；主人尺場次對 `owner-root-flag-bar`；提權卡死對 `doctrine-compatible-privesc`。禁止借复盤塞 payload／自報 PASS
 - DESIGN／戰術搜尋或 sense 要求 `cloud_cross`：讀 `references/cloud-sources.md`（多源交叉；禁止單點模型記憶）
 
-開局熱路徑：跑 `hunt_plan.py opening "…"` → 跑 `load_state_bundle.py` → 碰目標。不要為這三步去讀腳本或 `SKILL.md`。這三步不含查庫。
+開局熱路徑：跑 `warboard.py opening "…"` → 跑 `hunt_plan.py opening "…"` → 跑 `sense_gate.py --db ./pentest-state/warboard.sqlite --action observe`。不要為這三步去讀腳本或 `SKILL.md`。這三步不含查庫。`warboard` 預設 brief 不倒正文；`--full` 才倒 campaign JSON。markdown 五核心檔若還在磁碟上只會印 `markdown_debt=… unused`，不當 HAVE。
 
-其餘用到再讀：`search-mindset.md`（query 怎麼組）、`output-contract.md`（選項欄／fence／用語對不上時）、`state-schemas.md`（改欄位定義時）、`error-recovery.md`、`stall-breaker.md`、`hypothesis-engine.md`、`htb-preflight.md`、`port-scan-pipeline.md`、`tradecraft-index.md`（不知開哪份時）。
+其餘用到再讀：`search-mindset.md`（query 怎麼組）、`output-contract.md`（選項欄／fence／用語對不上時）、`warboard-schema.md`（改欄位定義時）、`error-recovery.md`、`stall-breaker.md`、`hypothesis-engine.md`、`htb-preflight.md`、`port-scan-pipeline.md`、`tradecraft-index.md`（不知開哪份時）。`state-schemas.md` 是 markdown bundle 考古，不是現行法。
 
-設計或使用 **warboard 共用真源**（ops console／SQLite 作戰台，尚非戰鬥熱路徑）時：先讀 `warboard-schema.md`，再讀 `interaction-truth-contract.md`。  
-收尾走 §10（`learning-loop.md`）。改本 skill 閘門時才讀 `skill-craft.md`。循環內部十二步在 `thinking-loop.md`，戰鬥不必載。runtime／歷史 harness 筆記不在戰鬥熱路徑。
+收尾走 §10（`learning-loop.md`）。改本 skill 閘門時才讀 `skill-craft.md`。循環內部十二步在 `thinking-loop.md`，戰鬥不必載。runtime／歷史 harness 筆記不在戰鬥熱路徑。`references/candidate-patches/` 是考古。
 
 ## 1. 指揮權與授權模型
 
@@ -124,7 +126,7 @@ HANDOFF 前可用 1–2 個 query 查還沒試過的（error + 環境 + 現成�
 - **外部材料有環境維度**：writeup／PoC／advisory 裡依賴身份、安裝、版本、預設值、以及注入／解析點周圍環境的結論，是作者環境的事實，不是本機前提。移植前用本場材料重建那個周圍環境再驗證；文章 payload 是假設來源，不是模板也不是結論。
 - **戰術外接**：戰術內容以即時搜尋展開，不內嵌攻略；分類名只當透鏡。
 - **證偽優先於確認**。
-- **Source-first**：深攻前讀完**本場**已取回、尚未標 `read`／`deferred` 的材料。範圍是本 engagement 的 `./pentest-state/` 與指揮丟來的檔，不是舊案、不是整個磁碟。大檔先 grep／摘要，禁止把 JS bundle／dump-dom／源碼樹整份灌進對話。讀完不得把材料暗示的利用當唯一下一刀（`hunt-loop.md` §2.2）。讀本地材料不形成目標授權。
+- **Source-first**：深攻前讀完**本場**已取回、尚未標 `read`／`deferred` 的材料。範圍是本 engagement 的 warboard 與指揮丟來的檔，不是舊案、不是整個磁碟。大檔先 grep／摘要，禁止把 JS bundle／dump-dom／源碼樹整份灌進對話。讀完不得把材料暗示的利用當唯一下一刀（`hunt-loop.md` §2.2）。讀本地材料不形成目標授權。
 - **反覆蓋幻覺**：references 不是完備宇宙。未寫入的技術預設可能存在。具名手法僅 illustration。
 - **未知先抽象再查**：不熟時先用能力語言命名 primitive，再搜；禁止硬映射成表內最像的舊招。
 - **偵查矩陣一次做完**：測一條 primitive 是否成立時，先列出該注真正會變的軸（通道、編碼、argv、旗標、路徑、mode）與對照組。每格成立與失敗必須能分開；分不開＝未決，不得寫已測／已否證／已窮盡。用腳本或同方向一批跑完再交回。同一 expect／kill_if 的變體不是新方向。詳 `hunt-loop.md` §4.1。
@@ -135,23 +137,24 @@ HANDOFF 前可用 1–2 個 query 查還沒試過的（error + 環境 + 現成�
 
 ## 3. 狀態模型
 
-使用 `./pentest-state/`。每次啟動：
+使用 `./pentest-state/warboard.sqlite`。每次啟動：
 
 ```bash
+python3 "$SKILL_ROOT/scripts/warboard.py" opening "<使用者原文>"
 python3 "$SKILL_ROOT/scripts/hunt_plan.py" opening "<使用者原文>"
-python3 "$SKILL_ROOT/scripts/load_state_bundle.py" ./pentest-state
+python3 "$SKILL_ROOT/scripts/sense_gate.py" --db ./pentest-state/warboard.sqlite --action observe
 ```
 
-腳本只執行；禁止 `read_file` 其源碼。loader 預設摘要（核心檔只報大小；hunt-plan 只印態勢列、缺口、活躍賭注。`--full` 才倒核心檔正文與 hunt-plan 正文）；目錄不存在則 `unavailable`，不阻塞。開局意圖是 `opening` stdout 第一行，第二行是 `loaded=`（§0）。使用者說「新 engagement」則不要把舊 bundle 當本期前提。
+腳本只執行；禁止 `read_file` 其源碼。warboard 預設 brief（只印態勢列、缺口、活躍賭注。`--full` 才倒 campaign JSON）；目錄不存在則建立空庫，不阻塞。開局意圖是 `opening` stdout 第一行，第二行是 `loaded=`（§0）。使用者說「新 engagement」則加 `--fresh`，不要把舊 sqlite 當本期前提。
 
-- 載入後用一兩句話交代目標、焦點、停點、完整度。有 `hunt-plan.md` 時加相位與下一探。
-- 不自動寫入。只有使用者明確要求 checkpoint 時才同步：把本場事實寫成一份 JSON，跑 `python3 "$SKILL_ROOT/scripts/checkpoint_write.py" --facts <檔> ./pentest-state`。腳本產出五核心檔與 hunt-plan overlay、對齊 metadata、驗證；失敗則原檔不動。禁止手寫核心檔。禁止為對格式讀 schema 或腳本源碼；欄位以 `checkpoint_write.py --print-schema` 為準。失敗一次：依 stderr 改 facts JSON 再跑一次。第二次仍失敗：停，把錯誤交指揮。保存完停在態勢，不交下一刀選項。
+- 載入後用一兩句話交代目標、焦點、停點、完整度。brief 有 Goal／下一探時加上。
+- 不自動寫入。只有使用者明確要求 checkpoint 時才同步：把本場事實寫成一份 JSON，跑 `python3 "$SKILL_ROOT/scripts/warboard.py" apply --facts <檔>`。腳本寫入 sqlite、驗證；失敗則庫回滾到該次 apply 前。禁止手寫核心檔、禁止再寫 markdown 五核心檔。禁止為對格式讀 schema 或腳本源碼；欄位以 `warboard.py --print-schema` 為準。失敗一次：依 stderr 改 facts JSON 再跑一次。第二次仍失敗：停，把錯誤交指揮。保存完停在態勢，不交下一刀選項。
 - 讀既有狀態不形成目標授權。
 - 新訊息目標不在已載入 scope → 回報衝突，不併入。
 - 新否證與舊 claim 衝突時必須改寫舊 claim。
 - **跨案件 IOC**：本場第一次見到可索引 IOC（IP／域名／錢包／框架／帳密／Token）才跑 `python3 "$SKILL_ROOT/scripts/ioc_lookup.py" <值>…`；stdout 寫進已知前提。同一值本場不重查。無此類值、或 CTF／HTB／THM／flag（§8）→ 不跑、0 次讀 vault。禁止 `read_file` vault 與 `evidence-db` 的 SKILL.md（腳本已搜索引，最多帶 1 個實體摘要）。UNAVAILABLE 不阻塞。寫庫只在收尾（§10）。
 
-要改欄位定義才讀 `state-schemas.md`。
+要改欄位定義才讀 `warboard-schema.md`。
 
 ## 4. 輕量 Route
 
@@ -214,7 +217,7 @@ python3 "$SKILL_ROOT/scripts/load_state_bundle.py" ./pentest-state
 - 欄內用指揮能跟上的完整繁體中文句子（§2）。必須交 2–3 條已排序選項；「繼續／打／好／GO／y」只確認選項 1。點名 2 或 3 才換刀。禁止只交是非題；禁止把未完成觀察攤成請指揮發明的選單。選項 1 必須完整到短詞能打完（R3）。若是指紋一條 primitive，建議那條要帶齊這一注的變體軸與對照組，用腳本一次跑（`hunt-loop.md` §4.1）。若判斷升級或未用秘密重用更能改 Goal，必須寫進選項並可當建議。提出≠執行。詳 `output-contract.md`。
 - 可列舉掃描結果先放進對話裡的 `markdown` 程式碼區塊（code fence），區塊內是可貼進 Obsidian 的標題+表原文。指揮從區塊複製，不必開 md 檔。禁止只渲染表、不給原始 markdown。欄位與標題見 `port-scan-pipeline.md` §4。選項欄仍寫在區塊外面。
 - 需要指揮執行的指令一律放進 code fence，全部裝進區塊裡。禁止只寫在句子或行內 backtick。說明在區塊外。詳 `output-contract.md` §1.3。
-- Phase 只寫進 `hunt-plan.md`／腳本，不印給指揮。checkpoint 回合只交態勢，不加選項。
+- Phase 只寫進 warboard／`hunt_plan.py`，不印給指揮。checkpoint 回合只交態勢，不加選項。
 - 未登入視覺必須截圖存 `./pentest-state/loot/screenshots/`，HANDOFF 只給路徑。禁止 `read_file` 圖進模型，除非判斷依賴畫面（驗證碼／彈窗／consent）且 dump-dom 不夠。要登入／點選才標 `[UI]`。禁止再 GET／curl 一次當看過。
 - OBSERVE 完成、Goal 達成、或本則已把圖送進模型：HANDOFF 建議 `/compact` 或 `/new`（帶走態勢列）。下一則第一個命令是 `session-load reset`（§0）。不代跑。
 - 跳過 Stall 必須明示「診斷未完成，不升格為事實」。

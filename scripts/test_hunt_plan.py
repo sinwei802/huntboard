@@ -504,16 +504,19 @@ class SkillContractTest(unittest.TestCase):
         self.assertIn("標為建議的那一條", loop)
         self.assertNotIn("回「打」或「繼續」我就只跑這一刀", skill)
 
-    def test_checkpoint_write_is_combat_path(self) -> None:
+    def test_warboard_apply_is_combat_path(self) -> None:
         skill = self._read("SKILL.md")
         schemas = self._read("references/state-schemas.md")
         index = self._read("references/tradecraft-index.md")
-        self.assertIn("checkpoint_write.py", skill)
+        war = self._read("references/warboard-schema.md")
+        self.assertIn("warboard.py", skill)
         self.assertIn("--print-schema", skill)
         self.assertIn("禁止手寫核心檔", skill)
-        self.assertIn("checkpoint_write.py", schemas)
+        self.assertIn("負債", schemas)
         self.assertIn("不是戰鬥寫入器", schemas)
-        self.assertIn("checkpoint_write.py", index)
+        self.assertIn("warboard.py apply", index)
+        self.assertIn("唯一真源", war)
+        self.assertNotIn("checkpoint_write.py", skill)
         self.assertNotIn("stamp 失敗才讀", skill)
         self.assertNotIn("先把事實寫進五核心檔正文，再跑", skill)
 

@@ -17,7 +17,7 @@
 | 假設組合怎麼維持正交、怎麼寫否證條件 | `hypothesis-engine.md` | 假設 portfolio 管理 |
 | 工具空結果／錯誤／半成功 | `error-recovery.md` | 分層診斷，不直接重試同命令 |
 | 要回報、Triage、態勢列／選項欄格式 | `output-contract.md` | 口語輸出與選項欄 |
-| 要改欄位定義 | `state-schemas.md` | 狀態 schema；保存進度跑 `checkpoint_write.py` |
+| 要改欄位定義 | `warboard-schema.md` | 狀態 schema；保存進度跑 `warboard.py apply` |
 | HTB／lab 開局、VPN、`*.htb`、交 flag | `htb-preflight.md` | 開局連通與 preflight |
 | 使用者說「掃／快掃／完整掃／存到 ./scan」 | `port-scan-pipeline.md` | depth × persist × 修飾三軸 |
 | 收尾（root／flag／報告）或「記下這次」 | `learning-loop.md` | 學習回路六步（見 SKILL §10） |

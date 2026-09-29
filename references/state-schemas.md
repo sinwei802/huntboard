@@ -1,6 +1,9 @@
-# State Bundle Schema v2 — 核心全載、證據按需
+# State Bundle Schema v2 — 負債（markdown 考古）
 
-使用目錄：`./pentest-state/`。本文件自洽。
+**現行真源**是 `./pentest-state/warboard.sqlite`（`warboard-schema.md`、`scripts/warboard.py`）。  
+本文件描述舊 markdown 五核心 bundle，供考古與 `load_state_bundle.py`／`checkpoint_write.py` 單元測試。戰鬥熱路徑禁止當 HAVE。
+
+使用目錄：`./pentest-state/`。本文件自洽。 brief 不倒正文。
 
 ## Bundle 組成（五核心檔）
 

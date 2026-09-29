@@ -1,3 +1,10 @@
+## 2026-09-29 — sqlite 唯一真源（markdown bundle 脫鉤）
+
+- 熱路徑改走 `scripts/warboard.py` opening／brief／apply；`sense_gate.py --db` 讀庫擋 H1 無面、H2 無賭注、R2 同輪新秘密。
+- `./pentest-state/warboard.sqlite` 為唯一 HAVE。舊五核心 md／json 若還在只警告 `markdown_debt`，不當本期前提。
+- SKILL 補 R6。`load_state_bundle.py`／`checkpoint_write.py` 降為考古（單元測試仍可跑）。
+- 無 payload／PoC。
+
 ## 2026-09-28 — 週一雙軌維護（vault 對齊＋雲端增源）
 
 - vault `資安/HuntSpear 薄 playbook` 與 sense-cards 漂移收斂（skill 為戰鬥真源）：提權分流第三態、禁 PoC 交叉段、主人尺／Web 階梯／复盤用語去內部場次標。
