@@ -23,7 +23,7 @@
 
 ## 2. 步驟（使用者新訊息時）
 
-1. **HYDRATE** — 跑 `load_state_bundle.py`（預設摘要，不倒核心檔正文）；繼承的 closed／BLOCKED 若缺 scoped 反證，標待重驗，不當永久牆
+1. **HYDRATE** — 跑 `warboard.py opening`／`brief`（預設摘要，不倒 markdown 正文）；繼承的 closed／BLOCKED 若缺 scoped 反證，標待重驗，不當永久牆
 2. **PREFLIGHT** — 新 HTB／lab 目標或連線未驗證時，載入 `htb-preflight.md` 做最小連通／hosts／archetype 檢查；缺 VPN／hosts 把命令交給指揮，preflight 完成後 STOP，不同輪自動掃描
 3. **PARSE** — 提取已知目標、服務、版本、錯誤、材料、已做過的事。先盤 `HAVE`（手上已有的 identity／通道），不要先盤「想打什麼」。判定狩獵相位；開局口語走 `hunt-loop.md` §2.1
 4. **STATE** — 只在作業脈絡更新 Asset Graph、Route Stack、Loot Tracker、Evidence Index、Hunt Plan。新否證與舊 claim 衝突時必須改寫舊 claim，不得並存

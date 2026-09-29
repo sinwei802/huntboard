@@ -107,7 +107,7 @@ Hunt HANDOFF 的態勢列印在選項之前，下一探填建議那條的短名�
 態勢：Goal=<能力語言> · 下一探=<建議那條的短名>
 ```
 
-Phase 只寫進 `hunt-plan.md`／`hunt_plan.py` 的 overlay，不印給指揮。可加 `主賭=`、`attempts=`、`未測軸=`、`調整=`、`HAVE=`、`wildcard=`。Goal = 能力語言，不是工具名。選項 1 必須完整到「繼續」就能打完（R3）。
+Phase 只寫進 warboard／`hunt_plan.py`，不印給指揮。可加 `主賭=`、`attempts=`、`未測軸=`、`調整=`、`HAVE=`、`wildcard=`。Goal = 能力語言，不是工具名。選項 1 必須完整到「繼續」就能打完（R3）。
 
 ## 10. 回合結尾
 

@@ -3,14 +3,14 @@
 戰役層。每則訊息仍受 SKILL 頂部 R1–R8 約束：一刀、停等、新發現不是授權。  
 **HANDOFF 結束的是這個方向，不是這場狩獵。** 計畫帶到下一則，直到 engagement 成功（flag／root／報告）或指揮收工。
 
-欄位、相位、開局意圖、可否深打：以 `scripts/hunt_plan.py` 為機械真源。改計畫後可跑：
+欄位、相位、開局意圖、可否深打：以 `scripts/hunt_plan.py` 為機械真源；持久化以 `scripts/warboard.py` 為準。改計畫後把同等欄位寫進 facts JSON，跑：
 
 ```bash
-python3 "$SKILL_ROOT/scripts/hunt_plan.py" validate ./pentest-state/hunt-plan.md
-python3 "$SKILL_ROOT/scripts/hunt_plan.py" adjust ./pentest-state/hunt-plan.md --outcome <fact_gained|bet_killed|new_surface|unknown_primitive|goal_achieved|engagement_done> --observed "<一句>"
+python3 "$SKILL_ROOT/scripts/warboard.py" apply --facts <檔>
+python3 "$SKILL_ROOT/scripts/warboard.py" brief
 ```
 
-作業脈絡沒有檔案時，手寫同等欄位並在 HANDOFF 印態勢列。checkpoint 才落 `./pentest-state/hunt-plan.md`。
+作業脈絡沒有 sqlite 時，開局 `warboard.py opening` 會建空庫。checkpoint 才 `apply`。禁止把 `hunt-plan.md` 當本期前提。
 
 ---
 

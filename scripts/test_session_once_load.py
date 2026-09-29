@@ -31,7 +31,7 @@ class SessionOnceLoadTest(unittest.TestCase):
         self.assertIn("session=absent", self.skill)
         self.assertIn("stale=", self.skill)
         self.assertIn("名單不進 `./pentest-state/`", self.skill)
-        self.assertIn("hunt-plan 只印態勢列、缺口、活躍賭注", self.skill)
+        self.assertIn("只印態勢列、缺口、活躍賭注", self.skill)
         schemas = _read("references/state-schemas.md")
         self.assertIn("brief 不倒正文", schemas)
         self.assertNotIn("有則 loader 一併印出", schemas)
@@ -45,13 +45,16 @@ class SessionOnceLoadTest(unittest.TestCase):
 
     def test_scripts_are_run_not_read(self) -> None:
         self.assertIn("hunt_plan.py\" opening", self.skill)
+        self.assertIn("warboard.py\" opening", self.skill)
         self.assertIn("禁止 `read_file` 其源碼", self.skill)
-        self.assertIn("loader 預設摘要", self.skill)
-        self.assertIn("`--full` 才倒核心檔正文", self.skill)
-        self.assertIn("checkpoint_write.py", self.skill)
+        self.assertIn("warboard 預設 brief", self.skill)
+        self.assertIn("`--full` 才倒 campaign JSON", self.skill)
+        self.assertIn("warboard.py\" apply", self.skill)
         self.assertIn("禁止手寫核心檔", self.skill)
         self.assertIn("禁止為對格式讀 schema 或腳本源碼", self.skill)
         self.assertNotIn('--stamp ./pentest-state', self.skill)
+        self.assertNotIn("load_state_bundle.py", self.skill)
+        self.assertNotIn("checkpoint_write.py", self.skill)
 
     def test_source_first_is_this_engagement(self) -> None:
         self.assertIn("本場**已取回", self.skill)

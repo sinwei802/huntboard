@@ -44,7 +44,8 @@ cd scripts && python3 -m unittest discover -p 'test_*.py'
 |------|------|
 | [`SKILL.md`](SKILL.md) | Agent skill 入口＋漸進揭露 |
 | [`references/sense-cards/`](references/sense-cards/) | 薄方法／證據門卡 |
-| [`scripts/sense_gate.py`](scripts/sense_gate.py) | 機械提案閘（僅方法論） |
+| [`scripts/warboard.py`](scripts/warboard.py) | 作戰台 SQLite 真源（opening／brief／apply） |
+| [`scripts/sense_gate.py`](scripts/sense_gate.py) | 機械提案閘（`--db` 讀庫；僅方法論） |
 | [`USER.md`](USER.md) | 操作者載入說明（非戰鬥閘） |
 | [`CHANGELOG.md`](CHANGELOG.md) | 滾動變更紀錄 |
 
@@ -62,7 +63,7 @@ USER.md               # 操作者說明
 CHANGELOG.md
 LICENSE               # MIT（勿改）
 references/           # contracts、local-sense、sense-cards、indexes
-scripts/              # hunt_plan、sense_gate、helpers、tests
+scripts/              # warboard、hunt_plan、sense_gate、helpers、tests
 ```
 
 ## 授權

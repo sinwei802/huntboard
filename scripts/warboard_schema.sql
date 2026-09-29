@@ -1,6 +1,6 @@
--- Warboard SQLite schema draft v0
+-- Warboard SQLite schema v0
 -- Matches references/warboard-schema.md
--- NOT yet runtime-enforced in the hunting skill loop.
+-- Runtime-enforced by scripts/warboard.py (hunting hot path).
 
 PRAGMA foreign_keys = ON;
 

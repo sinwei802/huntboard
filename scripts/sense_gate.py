@@ -121,12 +121,31 @@ def check(proposal: dict[str, Any]) -> list[str]:
     return errs
 
 
+def _db_errors(db: Path, action: str) -> list[str]:
+    scripts = Path(__file__).resolve().parent
+    if str(scripts) not in sys.path:
+        sys.path.insert(0, str(scripts))
+    import warboard
+
+    return warboard.gate_action(db, action)
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(description="Local-sense proposal gate")
     p.add_argument(
         "--check",
         metavar="FILE",
         help="JSON proposal file to validate",
+    )
+    p.add_argument(
+        "--db",
+        metavar="SQLITE",
+        help="warboard sqlite; high-risk gates read the db, not the proposal",
+    )
+    p.add_argument(
+        "--action",
+        default=None,
+        help="action class for --db gates (default: proposal action_class or observe)",
     )
     p.add_argument(
         "--print-schema",
@@ -151,22 +170,36 @@ def main(argv: list[str] | None = None) -> int:
         )
         return 0
 
-    if not args.check:
+    data: dict[str, Any] | None = None
+    if args.check:
+        path = Path(args.check)
+        try:
+            loaded = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"FAIL read:{e}", file=sys.stderr)
+            return 1
+        if not isinstance(loaded, dict):
+            print("FAIL not_object", file=sys.stderr)
+            return 1
+        data = loaded
+
+    if data is None and not args.db:
         p.print_help()
         return 2
 
-    path = Path(args.check)
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as e:
-        print(f"FAIL read:{e}", file=sys.stderr)
-        return 1
+    errs: list[str] = []
+    if data is not None:
+        errs.extend(check(data))
 
-    if not isinstance(data, dict):
-        print("FAIL not_object", file=sys.stderr)
-        return 1
+    action = (args.action or "").strip().lower()
+    if not action and data is not None:
+        action = str(data.get("action_class") or "observe").strip().lower()
+    if not action:
+        action = "observe"
 
-    errs = check(data)
+    if args.db:
+        errs.extend(_db_errors(Path(args.db), action))
+
     if errs:
         print("FAIL " + " ".join(errs), file=sys.stderr)
         return 1
